@@ -1,24 +1,4 @@
-/*!
-  _   _  ___  ____  ___ ________  _   _   _   _ ___   
- | | | |/ _ \|  _ \|_ _|__  / _ \| \ | | | | | |_ _| 
- | |_| | | | | |_) || |  / / | | |  \| | | | | || | 
- |  _  | |_| |  _ < | | / /| |_| | |\  | | |_| || |
- |_| |_|\___/|_| \_\___/____\___/|_| \_|  \___/|___|
-                                                                                                                                                                                                                                                                                                                                       
-=========================================================
-* Horizon UI - v1.1.0
-=========================================================
-
-* Product Page: https://www.horizon-ui.com/
-* Copyright 2022 Horizon UI (https://www.horizon-ui.com/)
-
-* Designed and Coded by Simmmple
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
+ 
 
 import {
   Avatar,
@@ -37,7 +17,8 @@ import MiniStatistics from 'components/card/MiniStatistics'
 import IconBox from 'components/icons/IconBox'
 import {
   MdAddTask,
-  MdAttachMoney,
+  MdWhatsapp,
+  MdOutlineContactMail,
   MdBarChart,
   MdFileCopy
 } from 'react-icons/md'
@@ -75,79 +56,18 @@ export default function UserReports () {
             gap='20px'
             mb='20px'
           >
+           
+            <MiniStatistics  name='Imported mails' value='1200' />
+         
             <MiniStatistics
               startContent={
                 <IconBox
                   w='56px'
-                  h='56px'
-                  bg={boxBg}
-                  icon={
-                    <Icon
-                      w='32px'
-                      h='32px'
-                      as={MdBarChart}
-                      color={brandColor}
-                    />
-                  }
+                  h='56px' 
+                  icon={<Icon w='28px' h='28px' as={MdWhatsapp} color='linear-gradient(90deg, #4481EB 0%, #04BEFE 100%)' />}
                 />
               }
-              name='Earnings'
-              value='$350.4'
-            />
-            <MiniStatistics
-              startContent={
-                <IconBox
-                  w='56px'
-                  h='56px'
-                  bg={boxBg}
-                  icon={
-                    <Icon
-                      w='32px'
-                      h='32px'
-                      as={MdAttachMoney}
-                      color={brandColor}
-                    />
-                  }
-                />
-              }
-              name='Spend this month'
-              value='$642.39'
-            />
-            <MiniStatistics growth='+23%' name='Sales' value='$574.34' />
-            <MiniStatistics
-              endContent={
-                <Flex me='-16px' mt='10px'>
-                  <FormLabel htmlFor='balance'>
-                    <Box boxSize={'12'}>
-                      <Image src={Usa} alt='' w={'100%'} h={'100%'} />
-                    </Box>
-                  </FormLabel>
-                  <Select
-                    id='balance'
-                    variant='mini'
-                    mt='5px'
-                    me='0px'
-                    defaultValue='usd'
-                  >
-                    <option value='usd'>USD</option>
-                    <option value='eur'>EUR</option>
-                    <option value='gba'>GBA</option>
-                  </Select>
-                </Flex>
-              }
-              name='Your balance'
-              value='$1,000'
-            />
-            <MiniStatistics
-              startContent={
-                <IconBox
-                  w='56px'
-                  h='56px'
-                  bg='linear-gradient(90deg, #4481EB 0%, #04BEFE 100%)'
-                  icon={<Icon w='28px' h='28px' as={MdAddTask} color='white' />}
-                />
-              }
-              name='New Tasks'
+              name='Imported phones'
               value='154'
             />
             <MiniStatistics
@@ -160,41 +80,26 @@ export default function UserReports () {
                     <Icon
                       w='32px'
                       h='32px'
-                      as={MdFileCopy}
+                      as={MdOutlineContactMail}
                       color={brandColor}
                     />
                   }
                 />
               }
-              name='Total Projects'
+              name='Total Mailings'
               value='2935'
             />
           </SimpleGrid>
 
-          <SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap='20px' mb='20px'>
-            <TotalSpent />
-            <WeeklyRevenue />
-          </SimpleGrid>
-          <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap='20px' mb='20px'>
+ 
+          <SimpleGrid columns={{ base: 1, md: 1, xl: 1 }} gap='20px' mb='20px'>
             <CheckTable
               columnsData={columnsDataCheck}
               tableData={(tableDataCheck as unknown) as TableData[]}
             />
-            <SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap='20px'>
-              <DailyTraffic />
-              <PieCard />
-            </SimpleGrid>
+      
           </SimpleGrid>
-          <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap='20px' mb='20px'>
-            <ComplexTable
-              columnsData={columnsDataComplex}
-              tableData={(tableDataComplex as unknown) as TableData[]}
-            />
-            <SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap='20px'>
-              <Tasks />
-              <MiniCalendar h='100%' minW='100%' selectRange={false} />
-            </SimpleGrid>
-          </SimpleGrid>
+  
         </>
       </Box>
     </AdminLayout>
