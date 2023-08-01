@@ -18,7 +18,7 @@ export default function Banner(props: { used: number; total: number; [x: string]
 	return (
 		<Card mb={{ base: '0px', lg: '20px' }} alignItems='center'>
 			<Flex w='100%'>
-				<Menu ms='auto' />
+		 
 			</Flex>
 			<IconBox
 				mx='auto'

@@ -1,4 +1,5 @@
 // chakra imports
+import { Icon } from '@chakra-ui/icons';
 import { Box, Flex, Stack } from '@chakra-ui/react';
 //   Custom components
 import Brand from 'components/sidebar/components/Brand';
@@ -20,8 +21,9 @@ function SidebarContent(props: SidebarContentProps) {
 			<Brand />
 			<Stack direction='column' mt='8px' mb='auto'>
 				<Box ps='20px' pe={{ lg: '16px', '2xl': '16px' }}>
-					<Links routes={routes} />
+					<Links routes={routes} /> 
 				</Box>
+			
 			</Stack>
 
 			<Box ps='20px' pe={{ lg: '16px', '2xl': '20px' }} mt='60px' mb='40px' borderRadius='30px'>

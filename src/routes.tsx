@@ -6,10 +6,11 @@ import {
   MdLock,
   MdOutlineShoppingCart
 } from 'react-icons/md'
+import {BsDatabaseFillLock} from 'react-icons/bs'
 
 // Admin Imports
 import MainDashboard from 'pages/admin/default'
-import NFTMarketplace from 'pages/admin/nft-marketplace'
+import NFTMarketplace from 'pages/admin/database'
 import Profile from 'pages/admin/profile'
 import DataTables from 'pages/admin/data-tables'
 import RTL from 'pages/rtl/rtl-default'
@@ -27,12 +28,12 @@ const routes: IRoute[] = [
     component: MainDashboard
   },
   {
-    name: 'NFT Marketplace',
+    name: 'Database',
     layout: '/admin',
-    path: '/nft-marketplace',
+    path: '/database',
     icon: (
       <Icon
-        as={MdOutlineShoppingCart}
+        as={BsDatabaseFillLock}
         width='20px'
         height='20px'
         color='inherit'
@@ -56,19 +57,13 @@ const routes: IRoute[] = [
     component: Profile
   },
   {
-    name: 'Sign In',
+    name: 'Log out',
     layout: '/auth',
-    path: '/sign-in',
+    path: '#',
     icon: <Icon as={MdLock} width='20px' height='20px' color='inherit' />,
     component: SignInCentered
   },
-  {
-    name: 'RTL Admin',
-    layout: '/rtl',
-    path: '/rtl-default',
-    icon: <Icon as={MdHome} width='20px' height='20px' color='inherit' />,
-    component: RTL
-  }
+ 
 ]
 
 export default routes

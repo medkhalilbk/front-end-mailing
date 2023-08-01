@@ -29,7 +29,7 @@ export default function Upload(props: { used?: number; total?: number; [x: strin
 								</Text>
 							</Flex>
 							<Text fontSize='sm' fontWeight='500' color='secondaryGray.500'>
-								PNG, JPG and GIF files are allowed
+								Only .csv files are allowed!
 							</Text>
 						</Box>
 					}
@@ -41,7 +41,7 @@ export default function Upload(props: { used?: number; total?: number; [x: strin
 						textAlign='start'
 						fontSize='2xl'
 						mt={{ base: '20px', '2xl': '50px' }}>
-						Complete your profile
+						Upload your mailist here!
 					</Text>
 					<Text
 						color={textColorSecondary}
@@ -49,8 +49,7 @@ export default function Upload(props: { used?: number; total?: number; [x: strin
 						my={{ base: 'auto', '2xl': '10px' }}
 						mx='auto'
 						textAlign='start'>
-						Stay on the pulse of distributed projects with an anline whiteboard to plan, coordinate and
-						discuss
+						Your mailist will be encrypted & stored in the databse and shown only for this user.
 					</Text>
 					<Flex w='100%'>
 						<Button
@@ -61,7 +60,7 @@ export default function Upload(props: { used?: number; total?: number; [x: strin
 							mt={{ base: '20px', '2xl': 'auto' }}
 							variant='brand'
 							fontWeight='500'>
-							Publish now
+							Upload now
 						</Button>
 					</Flex>
 				</Flex>

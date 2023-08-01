@@ -6,7 +6,8 @@ import theme from 'theme/theme'
 import 'styles/Fonts.css'
 import 'styles/App.css'
 import 'styles/Contact.css'
-
+import { store } from 'redux/store'
+import {Provider} from 'react-redux'
 import 'react-calendar/dist/Calendar.css'
 import 'styles/MiniCalendar.css'
 import Head from 'next/head'
@@ -20,7 +21,9 @@ function MyApp ({ Component, pageProps }: AppProps) {
         <meta name='theme-color' content='#000000' />
       </Head>
       <React.StrictMode>
-        <Component {...pageProps} />
+        <Provider store={store}>
+            <Component {...pageProps} />
+        </Provider>
       </React.StrictMode>
     </ChakraProvider>
   )

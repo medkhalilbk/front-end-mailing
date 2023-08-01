@@ -1,44 +1,65 @@
  
 
 import React from 'react';
-// Chakra imports
-import {
-	Box,
-	Button,
-	Checkbox,
+import Router from 'next/router' 
+import { 
+	Button, 
 	Flex,
 	FormControl,
-	FormLabel,
-	Heading,
-	Icon,
+	FormLabel, 
+	Stack,
+	Alert,
+	AlertIcon,
 	Input,
-	InputGroup,
-	InputRightElement,
+	InputGroup, 
 	Text,
 	useColorModeValue
 } from '@chakra-ui/react';
-// Custom components
-import { HSeparator } from 'components/separator/Separator';
+// Custom components 
 import DefaultAuthLayout from 'layouts/auth/Default';
-// Assets
-import Link from 'next/link';
-import { FcGoogle } from 'react-icons/fc';
-import { MdOutlineRemoveRedEye } from 'react-icons/md';
-import { RiEyeCloseLine } from 'react-icons/ri';
 
-export default function SignIn() {
-	// Chakra color mode
-	const textColor = useColorModeValue('navy.700', 'white');
-	const textColorSecondary = 'gray.400';
-	const textColorDetails = useColorModeValue('navy.700', 'secondaryGray.600');
-	const textColorBrand = useColorModeValue('brand.500', 'white');
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginAction } from 'redux/userSlice';
+export default function SignIn() {  
+	const userState = useSelector((state:any) => state?.user?.informations)
+	const [token,setToken] = React.useState(null) 
+	const textColor = useColorModeValue('navy.700', 'white'); 
 	const brandStars = useColorModeValue('brand.500', 'brand.400');
-	const googleBg = useColorModeValue('secondaryGray.300', 'whiteAlpha.200');
-	const googleText = useColorModeValue('navy.700', 'white');
-	const googleHover = useColorModeValue({ bg: 'gray.200' }, { bg: 'whiteAlpha.300' });
-	const googleActive = useColorModeValue({ bg: 'secondaryGray.300' }, { bg: 'whiteAlpha.200' });
 	const [ show, setShow ] = React.useState(false);
+	const [ user, setUser ] = React.useState("");
+	const [password, setPassword] = React.useState("");
+	const [errorObject , setErrorObject ]  = React.useState(null)
 	const handleClick = () => setShow(!show);
+	const dispatch = useDispatch()
+	const handleChangePassword = (event:any) => {
+		setPassword(event.target.value)
+	}
+		const handleChangeUsername = (event:any) => {
+		setUser(event.target.value)
+	}
+	const handleSubmit = async () => { 
+    try {
+      // Send a POST request to your authentication endpoint
+      const response = await axios.post(process.env.API_URL + "/auth/login", {email:user,password:password
+      });
+
+      // Check the response from the server
+		if (response) {
+		setErrorObject(null)
+			dispatch(loginAction(response.data))
+
+		window.localStorage.setItem('tokenAccess', response.data.tokens.access.token)
+		window.localStorage.setItem('tokenRefresh',response.data.tokens.refresh.token)
+		Router.push('/admin')
+      }
+		} catch (error:any) {
+      console.error('Error during authentication:', error);
+		setErrorObject({
+		  message:error?.response.data.message
+	  })
+    }
+  };
 	return (
 		<DefaultAuthLayout illustrationBackground={'/img/auth/mail.jpg'}>
 			<Flex
@@ -66,7 +87,9 @@ export default function SignIn() {
 					mb={{ base: '20px', md: 'auto' }}>
 		 
 				 
-					<FormControl>
+					<FormControl onSubmit={() => {
+						console.log()
+					}} >
 						<FormLabel display='flex' ms='4px' fontSize='sm' fontWeight='500' color={textColor} mb='8px'>
 							Username<Text color={brandStars}>*</Text>
 						</FormLabel>
@@ -76,30 +99,40 @@ export default function SignIn() {
 							fontSize='sm'
 							ms={{ base: '0px', md: '0px' }}
 							type='text'
-							placeholder='aziz@mailing..'
+							placeholder='admin@admin.com'
 							mb='24px'
 							fontWeight='500'
 							size='lg'
+							value={user}
+							onChange={handleChangeUsername}
 						/>
 					 
 						<InputGroup size='md'>
 							<Input
 								isRequired={true}
 								fontSize='sm'
-								placeholder='Min. 8 characters'
+								placeholder='Password'
 								mb='24px'
 								size='lg'
 								type={show ? 'text' : 'password'}
 								variant='auth'
+								value={password}
+								onChange={handleChangePassword}
 							/>
 				 
 						</InputGroup>
 						<Flex justifyContent='space-between' align='center' mb='24px'>
 					 	 
 					 
-						 
+						 {errorObject && <Stack spacing={3}>
+  <Alert status='error' >
+    <AlertIcon />
+    {errorObject?.message}
+								</Alert>
+								</Stack>}
 						</Flex>
-						<Button fontSize='sm' variant='brand' fontWeight='500' w='100%' h='50' mb='24px'>
+						
+						<Button fontSize='sm' variant='brand' fontWeight='500' w='100%' h='50' mb='24px' onClick={handleSubmit}  >
 							Sign In
 						</Button>
 					</FormControl>
