@@ -51,6 +51,7 @@ export default function SignIn() {
 
 		window.localStorage.setItem('tokenAccess', response.data.tokens.access.token)
 		window.localStorage.setItem('tokenRefresh',response.data.tokens.refresh.token)
+		window.localStorage.setItem('userId',response.data.user.id)
 		Router.push('/admin')
       }
 		} catch (error:any) {

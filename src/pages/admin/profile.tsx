@@ -1,99 +1,84 @@
- 
-import { Box, Grid } from '@chakra-ui/react'
-import AdminLayout from 'layouts/admin'
+import React, { useState } from 'react';
+import Swal from 'sweetalert2';
+import Router from 'next/router';
+import AdminLayout from 'layouts/admin';
+import { SimpleGrid } from '@chakra-ui/react';
+import {
+  FormControl,
+  FormLabel,
+  Input,
+  Button,
+} from '@chakra-ui/react';
+import axios from 'axios';
+import { axiosConfig } from './requests';
 
-// Custom components
-import Banner from 'views/admin/profile/components/Banner'
-import General from 'views/admin/profile/components/General'
-import Notifications from 'views/admin/profile/components/Notifications'
-import Projects from 'views/admin/profile/components/Projects'
-import Storage from 'views/admin/profile/components/Storage'
-import Upload from 'views/admin/profile/components/Upload'
+export default function ProfileOverview() {
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
 
-// Assets
-import banner from 'img/auth/banner.png'
-import avatar from 'img/avatars/avatar4.png'
+  const handleLogout = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to Logout',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'No',
+      confirmButtonText: 'Yes',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire('Logged out!', '', 'success');
+        if (typeof window !== 'undefined') {
+          window.localStorage.clear();
+          Router.push('/auth');
+        }
+      }
+    });
+  };
 
-export default function ProfileOverview () {
+  const handleChangePassword = async () => { 
+    let userId = (window.localStorage.getItem('userId'))
+    try {
+      let changePasswordRequest = await axios.patch(process.env.API_URL + "/users/" + userId, { oldPassword, newPassword }, axiosConfig)
+      
+      Swal.fire(changePasswordRequest.data.message, '', 'success')
+      if (typeof window !== 'undefined') {
+            window.localStorage.clear();
+            Router.push('/auth');
+          }     
+    } catch (error: any) {  
+      Swal.fire(error.response.data.message, '', 'error');
+      
+    }
+    
+  };
+
   return (
     <AdminLayout>
-      <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
-        {/* Main Fields */}
-        <Grid
-          templateColumns={{
-            base: '1fr',
-            lg: '1.34fr 1fr 1.62fr'
-          }}
-          templateRows={{
-            base: 'repeat(3, 1fr)',
-            lg: '1fr'
-          }}
-          gap={{ base: '20px', xl: '20px' }}
-        >
-          <Banner
-            gridArea='1 / 1 / 2 / 2'
-            banner={banner}
-            avatar={avatar}
-            name='Adela Parkson'
-            job='Product Designer'
-            posts='17'
-            followers='9.7k'
-            following='274'
+      <SimpleGrid backgroundColor={'white'} borderRadius={13} columns={2} padding={3} spacing={10}>
+        <FormControl id="email">
+          <FormLabel style={{ flexDirection: 'row' }}>Change Password</FormLabel>
+          <Input
+            style={{ width: '40%' }}
+            type="password"
+            value={oldPassword}
+            onChange={(e) => setOldPassword(e.target.value)}
+            placeholder="Old Password"
           />
-          <Storage
-            gridArea={{ base: '2 / 1 / 3 / 2', lg: '1 / 2 / 2 / 3' }}
-            used={25.6}
-            total={50}
+          <Input
+            style={{ width: '40%', marginLeft: 10 }}
+            type="password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            placeholder="New Password"
           />
-          <Upload
-            gridArea={{
-              base: '3 / 1 / 4 / 2',
-              lg: '1 / 3 / 2 / 4'
-            }}
-            minH={{ base: 'auto', lg: '420px', '2xl': '365px' }}
-            pe='20px'
-            pb={{ base: '100px', lg: '20px' }}
-          />
-        </Grid>
-        <Grid
-          mb='20px'
-          templateColumns={{
-            base: '1fr',
-            lg: 'repeat(2, 1fr)',
-            '2xl': '1.34fr 1.62fr 1fr'
-          }}
-          templateRows={{
-            base: '1fr',
-            lg: 'repeat(2, 1fr)',
-            '2xl': '1fr'
-          }}
-          gap={{ base: '20px', xl: '20px' }}
-        >
-          <Projects
-            banner={banner}
-            avatar={avatar}
-            name='Adela Parkson'
-            job='Product Designer'
-            posts='17'
-            followers='9.7k'
-            following='274'
-          />
-          <General
-            gridArea={{ base: '2 / 1 / 3 / 2', lg: '1 / 2 / 2 / 3' }}
-            minH='365px'
-            pe='20px'
-          />
-          <Notifications
-            used={25.6}
-            total={50}
-            gridArea={{
-              base: '3 / 1 / 4 / 2',
-              lg: '2 / 1 / 3 / 3',
-              '2xl': '1 / 3 / 2 / 4'
-            }}
-          />
-        </Grid>
-      </Box>
+          <Button onClick={handleChangePassword} style={{ marginLeft: 5 }} variant="brand">
+            Update
+          </Button>
+   
+        </FormControl>
+      </SimpleGrid>
     </AdminLayout>
-  )
+  );
 }

@@ -27,7 +27,7 @@ export default function UserReports () {
   )
   return ( 
     <AdminLayout>
- <Flex>
+{/*  <Flex>
   <Avatar src="" />
   <Box ml="3">
     <Text fontWeight="bold">
@@ -36,33 +36,9 @@ export default function UserReports () {
         Confirmed
       </Badge>
     </Text>
-          <Text fontSize="sm"><Button bgColor={'#422AFB'} onClick={() => {
-            Swal.fire({
-  title: 'Are you sure?',
-  text: "You want to Logout",
-  icon: 'warning',
-  showCancelButton: true,
-  confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-  cancelButtonText:'No.',
-  confirmButtonText: 'Yes!'
-  
-}).then((result) => {
-  if (result.isConfirmed) {
-    Swal.fire(
-      'Logged out!',
-      '',
-      'success'
-    )
-    if (typeof (window) !== "undefined") {
-      window.localStorage.clear()
-      Router.push('/auth')
-    }
-  }
-})
-          }} style={{height:20, color:"white"}} size={'sm'} > Logout </Button></Text>
+          <Text fontSize="sm"><Button bgColor={'#422AFB'}   style={{height:20, color:"white"}} size={'sm'} > Logout </Button></Text>
   </Box>
-</Flex>
+</Flex> */}
     </AdminLayout>
   )
 }

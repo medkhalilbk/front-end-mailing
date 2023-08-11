@@ -46,13 +46,9 @@ import Upload from 'views/admin/profile/components/Upload'
 import tableDataTopCreators from 'views/admin/marketplace/variables/tableDataTopCreators.json'
 import { tableColumnsTopCreators } from 'views/admin/marketplace/variables/tableColumnsTopCreators'
 import AdminLayout from 'layouts/admin'
-import { TableData } from 'views/admin/default/variables/columnsData'
-import NextLink from 'next/link'
+import { TableData } from 'views/admin/default/variables/columnsData' 
 
-export default function NftMarketplace () {
-  // Chakra Color Mode
-  const textColor = useColorModeValue('secondaryGray.900', 'white')
-  const textColorBrand = useColorModeValue('brand.500', 'white')
+export default function NftMarketplace () { 
   return (
     <AdminLayout>
       <Box pt={{ base: '180px', md: '80px', xl: '80px' }}>
@@ -79,8 +75,8 @@ export default function NftMarketplace () {
           />
           <Upload
             gridArea={{
-              base: '3 / 1 / 4 / 2',
-              lg: '1 / 1 / 2 / 4'
+              base: '3 / 1 ',
+              lg: '1 / 1 '
             }}
             minH={{ base: 'auto', lg: '420px', '2xl': '365px' }}
             pe='20px'

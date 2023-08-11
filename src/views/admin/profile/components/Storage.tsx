@@ -6,11 +6,9 @@ import IconBox from 'components/icons/IconBox';
 import Menu from 'components/menu/MainMenu';
 import React from 'react';
 // Assets
-import { MdOutlineCloudDone } from 'react-icons/md';
-
+import { MdOutlineCloudDone } from 'react-icons/md'; 
 export default function Banner(props: { used: number; total: number; [x: string]: any }) {
-	const { used, total } = props;
-	// Chakra Color Mode
+	const { used, total } = props; 
 	const textColorPrimary = useColorModeValue('secondaryGray.900', 'white');
 	const brandColor = useColorModeValue('brand.500', 'white');
 	const textColorSecondary = 'gray.400';

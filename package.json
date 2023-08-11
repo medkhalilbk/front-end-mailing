@@ -21,6 +21,8 @@
     "framer-motion": "^4.1.17",
     "next": "^12.2.5",
     "next-auth": "^4.22.3",
+    "primeicons": "^6.0.1",
+    "primereact": "^9.6.0",
     "react": "^17.0.2",
     "react-apexcharts": "^1.4.0",
     "react-calendar": "^3.7.0",

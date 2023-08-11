@@ -2,12 +2,23 @@
 import { Button, Flex, useColorModeValue } from '@chakra-ui/react';
 // Assets
 import { useDropzone } from 'react-dropzone';
-
-function Dropzone(props: { content: JSX.Element | string; [x: string]: any }) {
+import { useEffect } from 'react';
+function Dropzone(props: { content: JSX.Element | string; [x: string]: any | any }) {
 	const { content, ...rest } = props;
-	const { getRootProps, getInputProps } = useDropzone();
+	const { getRootProps, getInputProps , acceptedFiles } = useDropzone();
 	const bg = useColorModeValue('gray.100', 'navy.700');
 	const borderColor = useColorModeValue('secondaryGray.100', 'whiteAlpha.100');
+	const files = acceptedFiles.map((file : any) => (
+    <li key={file.path}>
+      {file.path} - {file.size} bytes
+    </li>
+  ));
+useEffect(() => {
+	if (files.length > 0) {
+	props.setFile(files)	
+ }
+}, [files])
+
 	return (
 		<Flex
 			align='center'
@@ -24,7 +35,9 @@ function Dropzone(props: { content: JSX.Element | string; [x: string]: any }) {
 			{...rest}>
 			<input {...getInputProps()} />
 			<Button variant='no-effects'>{content}</Button>
+			  
 		</Flex>
+		 
 	);
 }
 

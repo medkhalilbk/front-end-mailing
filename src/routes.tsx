@@ -43,7 +43,7 @@ const routes: IRoute[] = [
     secondary: true
   },
   {
-    name: 'Data Tables',
+    name: 'Clients',
     layout: '/admin',
     icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />,
     path: '/data-tables',
@@ -59,7 +59,7 @@ const routes: IRoute[] = [
   {
     name: 'Log out',
     layout: '/auth',
-    path: '#',
+    path: '/logout',
     icon: <Icon as={MdLock} width='20px' height='20px' color='inherit' />,
     component: SignInCentered
   },
