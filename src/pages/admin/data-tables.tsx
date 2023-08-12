@@ -21,10 +21,7 @@ export default function DataTables () {
   return (
     <AdminLayout>
       <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
-     <ComplexTable
-            columnsData={columnsDataComplex}
-            tableData={(tableDataComplex as unknown) as TableData[]}
-          />
+     <ComplexTable />
       </Box>
     </AdminLayout>
   )

@@ -32,24 +32,11 @@ export default function Upload(props: { used?: number; total?: number; [x: strin
 		<Card {...rest} mb='20px' alignItems='center' p='20px'>
 			<Flex h='100%' direction={{ base: 'column', '2xl': 'row' }}>
 				<Dropzone
-					setFile={setfileName}
+					filname={fileName}
 					w={{ base: '100%', '2xl': '268px' }}
 					me='36px'
 					maxH={{ base: '60%', lg: '50%', '2xl': '100%' }}
-					minH={{ base: '60%', lg: '50%', '2xl': '100%' }}
-					content={
-						<Box>
-							<Icon as={MdUpload} w='80px' h='80px' color={brandColor} />
-							<Flex justify='center' mx='auto' mb='12px'>
-								<Text fontSize='xl' fontWeight='700' color={brandColor}>
-									Upload Files
-								</Text>
-							</Flex>
-							<Text fontSize='sm' fontWeight='500' color='secondaryGray.500'>
-								{fileName? "File loaded!" : "Only .csv files are allowed!"}
-							</Text>
-						</Box>
-					}
+					minH={{ base: '60%', lg: '50%', '2xl': '100%' }} 
 				/>
 				<Flex direction='column' pe='44px'>
 					<Text

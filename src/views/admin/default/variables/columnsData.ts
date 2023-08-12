@@ -41,13 +41,14 @@ export const columnsDataComplex = [
 export type ColumnData = Column[];
 
 export type TableData = Column<{
-  name: (string | boolean)[];
-  date: string;
-  progress: number;
-  quantity?: number;
-  status?: string;
-  artworks?: string;
-  rating?: number;
+  company: String,
+  fullName: String,
+  email: String,
+  number: String,
+  country: String,
+  sector: String,
+  date: Date, 
+  userId: String
 }>;
 
 export type TableProps = {

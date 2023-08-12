@@ -13,11 +13,7 @@ import { Slider, SliderChangeEvent } from 'primereact/slider';
 import { Tag } from 'primereact/tag';
 import { CustomerService } from './service/CustomerService';
 import { Flex } from '@chakra-ui/react';
-
-interface Country {
-  name: string;
-  code: string;
-}
+import Swal from 'sweetalert2';
 
 interface Representative {
   name: string;
@@ -25,30 +21,27 @@ interface Representative {
 }
 
 interface Customer {
-  id: number;
-  name: string;
-  country: Country;
-  company: string;
-  date: string | Date;
-  status: string;
-  verified: boolean;
-  activity: number;
-  representative: Representative;
-  balance: number;
+  company: String,
+  fullName: String,
+  email: String,
+  number: String,
+  country: String,
+  sector: String,
+  date: Date | String
+  userId: String
 }
 
 export default function CustomersDemo() {
     const [customers, setCustomers] = useState<Customer[]>([]);
     const [selectedCustomers, setSelectedCustomers] = useState<Customer[]>([]);
-    const [filters, setFilters] = useState<DataTableFilterMeta>({
+    const [filters, setFilters] = useState<any>({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-        name: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-        'country.name': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-        representative: { value: null, matchMode: FilterMatchMode.IN },
+        company: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
+        country: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
+        email:  { value: null, matchMode: FilterMatchMode.IN },
         date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
-        balance: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
-        status: { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
-        activity: { value: null, matchMode: FilterMatchMode.BETWEEN }
+        number:  { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
+        sector:{ operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
     });
     const [globalFilterValue, setGlobalFilterValue] = useState<string>('');
     const [representatives] = useState<Representative[]>([
@@ -90,7 +83,9 @@ export default function CustomersDemo() {
 
     const getCustomers = (data: Customer[]) => {
         return [...(data || [])].map((d) => {
-            d.date = new Date(d.date);
+            if (typeof d.date =="string") {
+                d.date = new Date(d.date)
+            };
 
             return d;
         });
@@ -104,9 +99,7 @@ export default function CustomersDemo() {
         });
     };
 
-    const formatCurrency = (value: number) => {
-        return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-    };
+  
 
     const onGlobalFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -133,20 +126,17 @@ export default function CustomersDemo() {
     const countryBodyTemplate = (rowData: Customer) => {
         return (
             <div className="flex align-items-center gap-2">
-                <img alt="flag" src="https://primefaces.org/cdn/primereact/images/flag/flag_placeholder.png" className={`flag flag-${rowData.country.code}`} style={{ width: '24px' }} />
-                <span>{rowData.country.name}</span>
+                <img alt="flag" src="https://primefaces.org/cdn/primereact/images/flag/flag_placeholder.png" className={`flag flag-${rowData.country}`} style={{ width: '24px' }} />
+                <span>{rowData.country}</span>
             </div>
         );
     };
 
     const representativeBodyTemplate = (rowData: Customer) => {
-        const representative = rowData.representative;
+        const representative = rowData;
 
         return (
-            <div className="flex align-items-center gap-2">
-                <img alt={representative.name} src={`https://primefaces.org/cdn/primereact/images/avatar/${representative.image}`} width="32" />
-                <span>{representative.name}</span>
-            </div>
+         <></>
         );
     };
 
@@ -169,7 +159,7 @@ export default function CustomersDemo() {
     };
 
     const dateBodyTemplate = (rowData: Customer) => {
-        return formatDate(rowData.date);
+    return (typeof rowData.date === "string") ? formatDate(rowData.date) : rowData.date;
     };
 
     const dateFilterTemplate = (options: ColumnFilterElementTemplateOptions) => {
@@ -177,16 +167,12 @@ export default function CustomersDemo() {
     };
 
     const balanceBodyTemplate = (rowData: Customer) => {
-        return formatCurrency(rowData.balance);
+      /*   return formatCurrency(rowData.balance); */
     };
 
-    const balanceFilterTemplate = (options: ColumnFilterElementTemplateOptions) => {
-        return <InputNumber value={options.value} onChange={(e: InputNumberValueChangeEvent) => options.filterCallback(e.value, options.index)} mode="currency" currency="USD" locale="en-US" />;
-    };
+ 
 
-    const statusBodyTemplate = (rowData: Customer) => {
-        return <Tag value={rowData.status} severity={getSeverity(rowData.status)} />;
-    };
+ 
 
     const statusFilterTemplate = (options: ColumnFilterElementTemplateOptions) => {
         return <Dropdown value={options.value} options={statuses} onChange={(e: DropdownChangeEvent) => options.filterCallback(e.value, options.index)} itemTemplate={statusItemTemplate} placeholder="Select One" className="p-column-filter" showClear />;
@@ -196,9 +182,7 @@ export default function CustomersDemo() {
         return <Tag value={option} severity={getSeverity(option)} />;
     };
 
-    const activityBodyTemplate = (rowData: Customer) => {
-        return <ProgressBar value={rowData.activity} showValue={false} style={{ height: '6px' }}></ProgressBar>;
-    };
+
 
     const activityFilterTemplate = (options: ColumnFilterElementTemplateOptions) => {
         return (
@@ -212,8 +196,8 @@ export default function CustomersDemo() {
         );
     };
 
-    const actionBodyTemplate = () => {
-        return <Button type="button" icon="pi pi-cog" rounded></Button>;
+    const actionBodyTemplate = (costumer: Customer) => {
+        return <Button onClick={() => console.log(costumer.userId)} type="button" icon="pi pi-envelope" rounded></Button>;
     };
 
     const header = renderHeader();
@@ -221,28 +205,25 @@ export default function CustomersDemo() {
     return (
      
       <Flex  >
-         <DataTable value={customers} paginator header={header} rows={6}
+         <DataTable value={customers} paginator header={header} rows={8}
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                    rowsPerPageOptions={[10, 25, 50]} dataKey="id" selectionMode="checkbox" selection={selectedCustomers} 
+                    rowsPerPageOptions={[10, 25, 50]} dataKey="id" /* selectionMode="checkbox" *//*  selection={selectedCustomers}  */
                     onSelectionChange={(e) => {
                         const customers = e.value as Customer[];
                         setSelectedCustomers(customers);
                     }}
-                    filters={filters} filterDisplay="menu" globalFilterFields={['name', 'country.name', 'representative.name', 'balance', 'status']}
+                    filters={filters} filterDisplay="menu" globalFilterFields={['company', 'fullName', 'email', 'country', 'sector', 'date']}
                     emptyMessage="No customers found." currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
-                <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
-                <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" style={{ minWidth: '14rem' }} />
-                <Column field="country.name" header="Country" sortable filterField="country.name" style={{ minWidth: '14rem' }} body={countryBodyTemplate} filter filterPlaceholder="Search by country" />
-                <Column header="Agent" sortable sortField="representative.name" filterField="representative" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }}
-                    style={{ minWidth: '14rem' }} body={representativeBodyTemplate} filter filterElement={representativeFilterTemplate} />
-                <Column field="date" header="Date" sortable filterField="date" dataType="date" style={{ minWidth: '12rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />
-                <Column field="balance" header="Balance" sortable dataType="numeric" style={{ minWidth: '12rem' }} body={balanceBodyTemplate} filter filterElement={balanceFilterTemplate} />
-                <Column field="status" header="Status" sortable filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '12rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
-                <Column field="activity" header="Activity" sortable showFilterMatchModes={false} style={{ minWidth: '12rem' }} body={activityBodyTemplate} filter filterElement={activityFilterTemplate} />
-                <Column headerStyle={{ width: '5rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyTemplate} />
+                {/* <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column> */}
+                <Column field="company" header="Company" sortable filter filterPlaceholder="Search by company" style={{ minWidth: '14rem' }} />
+                <Column field="fullName" header="Full Name" sortable filterField="fullName" style={{ minWidth: '14rem' }}    filterPlaceholder="Search by country" />
+                <Column header="Email" field='email' sortable sortField="email" filterField="email"  filterMenuStyle={{ width: '14rem' }}
+                style={{ minWidth: '14rem' }}  filter  />
+                <Column field="number"  header="Phone Number" sortable filterField="phone"   style={{ minWidth: '12rem' }}    />
+                <Column field="country" header="Country" sortable style={{ minWidth: '12rem' }}  filter />
+                <Column field="sector" header="Sector" sortable filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '12rem' }}   filter filterElement={statusFilterTemplate} />
+                <Column field="id" headerStyle={{ width: '5rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyTemplate} />
             </DataTable>
            </Flex>
-
-        
     );
 }
