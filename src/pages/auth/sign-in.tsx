@@ -21,6 +21,7 @@ import DefaultAuthLayout from 'layouts/auth/Default';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginAction } from 'redux/userSlice';
+import { apiUrl } from 'components/requests';
 export default function SignIn() {  
 	const userState = useSelector((state:any) => state?.user?.informations)
 	const [token,setToken] = React.useState(null) 
@@ -40,7 +41,7 @@ export default function SignIn() {
 	}
 	const handleSubmit = async () => { 
     try { 
-      const response = await axios.post("https://164.92.110.240:3000/v1/auth/login", {email:user,password:password
+      const response = await axios.post(apiUrl + "/auth/login", {email:user,password:password
       });
  
 		if (response) {

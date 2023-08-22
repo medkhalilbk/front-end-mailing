@@ -3,6 +3,8 @@ import { store } from "../redux/store";
 
 const state = store.getState() 
 
+export const apiUrl = "https://146.190.35.48/v1"
+
 export function getToken(): any {
     
     if (typeof (window) !== "undefined") {
@@ -26,7 +28,7 @@ export function getToken(): any {
 export async function getAllClients(): Promise<any> {
    
  try {
-     const request = await axios.get("https://164.92.110.240:3000/v1" + "/clients", axiosConfig)
+     const request = await axios.get(apiUrl + "/clients", axiosConfig)
      return request.data.message 
  } catch (error : any ) {
      if (error.response.status === 401) {
@@ -42,7 +44,7 @@ export async function getAllClients(): Promise<any> {
 export async function sendEmail(costumers : any[], body:String): Promise<any> {
      
  try {
-     const request = await axios.post("https://164.92.110.240:3000/v1" + "/sendMails",{to:costumers,mailBody:body} , axiosConfig)
+     const request = await axios.post(apiUrl + "/sendMails",{to:costumers,mailBody:body} , axiosConfig)
      return request.data.message 
  } catch (error : any ) {
      if (error.response.status === 401) {
@@ -56,7 +58,7 @@ export async function sendEmail(costumers : any[], body:String): Promise<any> {
 export async function deleteClient(id:String): Promise<any> {
    
  try {
-     const request = await axios.delete("https://164.92.110.240:3000/v1" + "/clients/"+id, axiosConfig)
+     const request = await axios.delete(apiUrl + "/clients/"+id, axiosConfig)
      return request.data.message 
  } catch (error : any ) {
      if (error.response.status === 401) {
@@ -73,7 +75,7 @@ export async function deleteClient(id:String): Promise<any> {
 export async function updateClient(custmer:any) {
       
  try {
-     const request = await axios.put("https://164.92.110.240:3000/v1" + "/clients/"+custmer.id, custmer,   axiosConfig)
+     const request = await axios.put(apiUrl + "/clients/"+custmer.id, custmer,   axiosConfig)
      return request.data.message 
  } catch (error : any ) {
      if (error.response.status === 401) {
@@ -88,7 +90,7 @@ export async function updateClient(custmer:any) {
 
 export async function getFiles() {
 try {
-    return await axios.get("https://164.92.110.240:3000/v1" + "/files", axiosConfig)
+    return await axios.get(apiUrl + "/files", axiosConfig)
    
 } catch (error) {
     console.log(error)    
@@ -97,7 +99,7 @@ try {
 
 export async function addClientRequest(client:any) {
     try {
-        const request = axios.post("https://164.92.110.240:3000/v1" + "/clients" , client , axiosConfig)
+        const request = axios.post(apiUrl + "/clients" , client , axiosConfig)
         return request
     } catch (error) {
         return error
