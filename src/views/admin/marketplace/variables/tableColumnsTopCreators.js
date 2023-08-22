@@ -4,11 +4,11 @@ export const tableColumnsTopCreators = [
     accessor: "name",
   },
   {
-    Header: "Emails",
-    accessor: "emails",
+    Header: "Date",
+    accessor: "time",
   },
   {
-    Header: "sent",
-    accessor: "sent",
+    Header: "Size",
+    accessor: "fileSize",
   },
 ];

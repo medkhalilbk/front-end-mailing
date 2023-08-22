@@ -18,6 +18,7 @@ import RTL from 'pages/rtl/rtl-default'
 // Auth Imports
 import SignInCentered from 'pages/auth/sign-in'
 import { IRoute } from 'types/navigation'
+import sendMail from 'pages/admin/sendMail'
 
 const routes: IRoute[] = [
   {
@@ -63,6 +64,13 @@ const routes: IRoute[] = [
     icon: <Icon as={MdLock} width='20px' height='20px' color='inherit' />,
     component: SignInCentered
   },
+  {
+    name: "sendMail",
+    layout: '/admin',
+    path: '/sendMail',
+    icon:  null,
+    component: sendMail
+  }
  
 ]
 

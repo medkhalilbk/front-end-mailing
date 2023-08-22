@@ -1,16 +1,20 @@
 // Chakra imports
 import { Box, Button, Flex, Icon, Text, useColorModeValue } from '@chakra-ui/react';
+import axios from 'axios';
 // Custom components
 import Card from 'components/card/Card';
-import { useState } from 'react';
-// Assets
-import { MdUpload } from 'react-icons/md';
+import { axiosConfig } from 'pages/admin/requests';
+import { useEffect, useState } from 'react';
+// Assets 
 import Swal from 'sweetalert2';
 import Dropzone from 'views/admin/profile/components/Dropzone';
 
-export default function Upload(props: { used?: number; total?: number; [x: string]: any }) {
+export default function Upload(props: { used?: number; total?: number;[x: string]: any }) {
+
+	
 	const { used, total, ...rest } = props; 
 	const proceedUpload = () => {
+	const formData = new FormData();
 		Swal.fire({title: 'Submit filename',
   input: 'text',
   inputAttributes: {
@@ -19,7 +23,19 @@ export default function Upload(props: { used?: number; total?: number; [x: strin
   showCancelButton: true,
   confirmButtonText: 'Start upload',
   showLoaderOnConfirm: true,
-   preConfirm: (name => { alert(name) })
+			preConfirm: ( async (name) => { 
+				
+				formData.append('mailFile', fileName); 
+				try {
+					
+				formData.append('name', name)
+					const postFile = await axios.post(process.env.API_URL + "/clients/import", formData, axiosConfig)
+					window.location.reload()
+				} catch (error:any) {
+					Swal.fire({ title: "Error!", text:error.message})
+				}
+			 })
+   			
 		}
   
 		)
@@ -28,11 +44,16 @@ export default function Upload(props: { used?: number; total?: number; [x: strin
 	const brandColor = useColorModeValue('brand.500', 'white');
 	const textColorSecondary = 'gray.400';
 	const [fileName, setfileName] = useState(null)
+	 
+	useEffect(() => {
+	 console.log(fileName)
+	}, [fileName])
+	
 	return (
 		<Card {...rest} mb='20px' alignItems='center' p='20px'>
 			<Flex h='100%' direction={{ base: 'column', '2xl': 'row' }}>
 				<Dropzone
-					filname={fileName}
+					filname={setfileName}
 					w={{ base: '100%', '2xl': '268px' }}
 					me='36px'
 					maxH={{ base: '60%', lg: '50%', '2xl': '100%' }}
@@ -57,6 +78,7 @@ export default function Upload(props: { used?: number; total?: number; [x: strin
 					</Text>
 					<Flex w='100%'>
 						<Button
+							disabled={!fileName}
 							onClick={() => {proceedUpload()}}
 							me='100%'
 							mb='50px'
@@ -67,18 +89,18 @@ export default function Upload(props: { used?: number; total?: number; [x: strin
 							fontWeight='500'>
 							Upload now
 						</Button>
-					</Flex>
-				</Flex>
-				
-			</Flex>
-					<Text
+							<Text
 						color={textColorPrimary}
 						fontSize='md'
 						my={{ base: 'auto', '2xl': '10px' }}
 						mx='auto'
-						textAlign='start'>
-						{fileName? fileName : ""}
+						textAlign='start'> 
 					</Text>
+					</Flex>
+				</Flex>
+				
+			</Flex>
+				
 		</Card>
 	);
 }

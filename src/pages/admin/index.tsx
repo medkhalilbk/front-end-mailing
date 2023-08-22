@@ -1,10 +1,17 @@
-import Router from 'next/router'
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
+import Router from 'next/router';
 
-export default function Admin () {
+export default function Admin() {
   useEffect(() => {
-    Router.push('/admin/default')
-  })
+    const hasNavigated = localStorage.getItem('hasNavigated'); 
+    if (!hasNavigated) {
+      Router.push('/admin/data-tables');
+      localStorage.setItem('hasNavigated', 'true');
+    } else {
+      localStorage.removeItem('hasNavigated');
+      window.location.reload();
+    }
+  }, []);
 
-  return <div />
+  return <div />;
 }

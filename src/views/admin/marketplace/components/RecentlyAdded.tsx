@@ -4,8 +4,7 @@ import {
   Avatar,
   Box,
   Button,
-  Flex,
-  Progress,
+  Flex, 
   Spinner,
   Table,
   Tbody,
@@ -15,7 +14,7 @@ import {
   Thead,
   Tr,
   useColorModeValue
-} from '@chakra-ui/react'
+} from '@chakra-ui/react' 
 import React, { useMemo } from 'react'
 import {
   useGlobalFilter,
@@ -25,7 +24,9 @@ import {
 } from 'react-table'
 import { TableProps } from 'views/admin/default/variables/columnsData'
 
-function TopCreatorTable (props: TableProps) {
+function TopCreatorTable(props: TableProps) {
+
+  
   const { columnsData, tableData } = props
 
   const columns = useMemo(() => columnsData, [columnsData])
@@ -121,11 +122,11 @@ function TopCreatorTable (props: TableProps) {
                             fontSize='sm'
                             fontWeight='600'
                           >
-                            {cell.value[0]}
+                            {cell.value}
                           </Text>
                         </Flex>
                       )
-                    } else if (cell.column.Header === 'Emails') {
+                    } else if (cell.column.Header === 'Date') {
                       data = (
                         <Text
                           color={textColorSecondary}
@@ -135,10 +136,10 @@ function TopCreatorTable (props: TableProps) {
                           {cell.value}
                         </Text>
                       )
-                    } else if (cell.column.Header === 'sent') {
+                    } else if (cell.column.Header === 'Size') {
                       data = (
                         <Box>
-                          {cell.value ? <Alert background={"none"} status='success' ><AlertIcon></AlertIcon></Alert> :  <Alert background={"transparent"}><Spinner size={"sm"} /></Alert>}
+                           {cell.value}
                         </Box>
                       )
                     }

@@ -39,16 +39,13 @@ export default function SignIn() {
 		setUser(event.target.value)
 	}
 	const handleSubmit = async () => { 
-    try {
-      // Send a POST request to your authentication endpoint
+    try { 
       const response = await axios.post(process.env.API_URL + "/auth/login", {email:user,password:password
       });
-
-      // Check the response from the server
+ 
 		if (response) {
 		setErrorObject(null)
-			dispatch(loginAction(response.data))
-
+		dispatch(loginAction(response.data)) 
 		window.localStorage.setItem('tokenAccess', response.data.tokens.access.token)
 		window.localStorage.setItem('tokenRefresh',response.data.tokens.refresh.token)
 		window.localStorage.setItem('userId',response.data.user.id)

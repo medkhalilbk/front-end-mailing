@@ -33,6 +33,9 @@ export function SidebarLinks (props: SidebarLinksProps) {
    
   const createLinks = (routes: IRoute[]) => {
     return routes.map((route, index: number) => {
+      if (route.name === "sendMail") {
+        return null
+      }
       if (
         route.layout === '/admin' ||
         route.layout === '/auth' ||

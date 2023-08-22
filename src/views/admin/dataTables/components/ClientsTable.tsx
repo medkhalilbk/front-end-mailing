@@ -2,25 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { DataTable, DataTableFilterMeta } from 'primereact/datatable';
 import { Column, ColumnFilterElementTemplateOptions } from 'primereact/column';
-import { InputText } from 'primereact/inputtext';
-import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
-import { InputNumber, InputNumberValueChangeEvent } from 'primereact/inputnumber';
-import { Button } from 'primereact/button';
-import { ProgressBar } from 'primereact/progressbar';
-import { Calendar, CalendarChangeEvent } from 'primereact/calendar';
-import { MultiSelect, MultiSelectChangeEvent } from 'primereact/multiselect';
-import { Slider, SliderChangeEvent } from 'primereact/slider';
+import { InputText } from 'primereact/inputtext'; 
+import { Button } from 'primereact/button';  
 import { Tag } from 'primereact/tag';
 import { CustomerService } from './service/CustomerService';
-import { Flex } from '@chakra-ui/react';
+import { Checkbox, Flex, Stack } from '@chakra-ui/react';
 import Swal from 'sweetalert2';
-
+import Router from 'next/router';
+import { useDispatch } from 'react-redux';
+import { updateCostumersListAction } from 'redux/costumerSlice';
+import { deleteClient, updateClient } from 'pages/admin/requests';
 interface Representative {
   name: string;
   image: string;
 }
 
 interface Customer {
+  id:String | null , 
   company: String,
   fullName: String,
   email: String,
@@ -29,11 +27,12 @@ interface Customer {
   sector: String,
   date: Date | String
   userId: String
-}
+} 
 
 export default function CustomersDemo() {
     const [customers, setCustomers] = useState<Customer[]>([]);
     const [selectedCustomers, setSelectedCustomers] = useState<Customer[]>([]);
+    const dispatch = useDispatch() 
     const [filters, setFilters] = useState<any>({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
         company: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
@@ -78,9 +77,24 @@ export default function CustomersDemo() {
     };
 
     useEffect(() => {
-        CustomerService.getCustomersLarge().then((data: Customer[]) => setCustomers(getCustomers(data)));
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+        dispatch(updateCostumersListAction(null))
+        CustomerService.getCustomersLarge().then((data: any[]) => setCustomers(getCustomers(data))).catch((err) =>
+        {
+              Swal.fire({
+                icon: 'error', title: "You have to reconnect!", allowOutsideClick: false,
+            showCloseButton: false, text: err.message
+        }).then(() => {
+       window.localStorage.clear();
+       Router.push('/auth');
+  })
+        });
+    
+    }, []); 
 
+    useEffect(() => {
+    dispatch(updateCostumersListAction(selectedCustomers))
+    }, [selectedCustomers])
+    
     const getCustomers = (data: Customer[]) => {
         return [...(data || [])].map((d) => {
             if (typeof d.date =="string") {
@@ -122,32 +136,8 @@ export default function CustomersDemo() {
             </div>
         );
     };
-
-    const countryBodyTemplate = (rowData: Customer) => {
-        return (
-            <div className="flex align-items-center gap-2">
-                <img alt="flag" src="https://primefaces.org/cdn/primereact/images/flag/flag_placeholder.png" className={`flag flag-${rowData.country}`} style={{ width: '24px' }} />
-                <span>{rowData.country}</span>
-            </div>
-        );
-    };
-
-    const representativeBodyTemplate = (rowData: Customer) => {
-        const representative = rowData;
-
-        return (
-         <></>
-        );
-    };
-
-    const representativeFilterTemplate = (options: ColumnFilterElementTemplateOptions) => {
-        return (
-            <React.Fragment>
-                <div className="mb-3 font-bold">Agent Picker</div>
-                <MultiSelect value={options.value} options={representatives} itemTemplate={representativesItemTemplate} onChange={(e: MultiSelectChangeEvent) => options.filterCallback(e.value)} optionLabel="name" placeholder="Any" className="p-column-filter" />
-            </React.Fragment>
-        );
-    };
+ 
+ 
 
     const representativesItemTemplate = (option: Representative) => {
         return (
@@ -158,71 +148,104 @@ export default function CustomersDemo() {
         );
     };
 
-    const dateBodyTemplate = (rowData: Customer) => {
-    return (typeof rowData.date === "string") ? formatDate(rowData.date) : rowData.date;
-    };
-
-    const dateFilterTemplate = (options: ColumnFilterElementTemplateOptions) => {
-        return <Calendar value={options.value} onChange={(e: CalendarChangeEvent) => options.filterCallback(e.value, options.index)} dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />;
-    };
-
-    const balanceBodyTemplate = (rowData: Customer) => {
-      /*   return formatCurrency(rowData.balance); */
-    };
-
- 
-
- 
-
-    const statusFilterTemplate = (options: ColumnFilterElementTemplateOptions) => {
-        return <Dropdown value={options.value} options={statuses} onChange={(e: DropdownChangeEvent) => options.filterCallback(e.value, options.index)} itemTemplate={statusItemTemplate} placeholder="Select One" className="p-column-filter" showClear />;
-    };
+    
 
     const statusItemTemplate = (option: string) => {
         return <Tag value={option} severity={getSeverity(option)} />;
     };
-
-
-
-    const activityFilterTemplate = (options: ColumnFilterElementTemplateOptions) => {
-        return (
-            <>
-                <Slider value={options.value} onChange={(e: SliderChangeEvent) => options.filterCallback(e.value)} range className="m-3"></Slider>
-                <div className="flex align-items-center justify-content-between px-2">
-                    <span>{options.value ? options.value[0] : 0}</span>
-                    <span>{options.value ? options.value[1] : 100}</span>
-                </div>
-            </>
-        );
-    };
+ 
 
     const actionBodyTemplate = (costumer: Customer) => {
-        return <Button onClick={() => console.log(costumer.userId)} type="button" icon="pi pi-envelope" rounded></Button>;
+        return <Flex style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignContent: "baseline" }}><Button onClick={() => {
+            Router.push('/admin/sendMail')
+            dispatch(updateCostumersListAction([costumer]))
+        }} type="button" icon="pi pi-envelope " rounded></Button><Button onClick={() =>  {Swal.fire({
+  title: 'Client detail',
+  html: `<b>Company</b> <input type="text" id="company" value="${costumer.company}" class="swal2-input"> <br> <b>Full Name</b> <input type="text" id="fName" value="${costumer.fullName}" class="swal2-input"> <br> <b>Email Add</b> <input type="text" id="email" value="${costumer.email}" class="swal2-input" style='fontSize:10px!important;'> <b>Phone Nbr</b> <input type="text" id="phone" value="${costumer.number}" class="swal2-input"> <b>Company</b> <input type="text" id="country" value="${costumer.country}" class="swal2-input"> <b> Activity</b> <input type="text" id="sector" value="${costumer.sector}" class="swal2-input">`,
+  confirmButtonText: 'Edit',
+  focusConfirm: false,
+            preConfirm: () => {
+    const id = costumer.id
+    const company = Swal.getPopup().querySelector('#company').value
+    const fullName = Swal.getPopup().querySelector('#fName').value 
+    const email = Swal.getPopup().querySelector('#email').value 
+    const number = Swal.getPopup().querySelector('#phone').value 
+    const country = Swal.getPopup().querySelector('#country').value 
+    const sector = Swal.getPopup().querySelector('#sector').value 
+    
+    return {id,company,fullName,email,number,country,sector}
+  }
+        }).then( async (result:any) => {
+           try {
+             if (result.value) {
+            const  {id,company,fullName,email,number,country,sector} = result.value
+            let updatedCostumer = { id: id, company: company, fullName: fullName, email: email, number: number, country: country, sector: sector }
+            const request = await updateClient(updatedCostumer)   
+            window.location.reload()
+           } 
+          } catch (error:any) {
+             Swal.fire(`
+    error: ${error.message}` )
+           } 
+ 
+})}} type="button" style={{ backgroundColor: "orange", borderColor: "orange" }} icon="pi pi-user-edit" rounded></Button><Button onClick={() => Swal.fire({ title: "Are you sure to delete?", html: "<b> Company : </b>" + costumer.company + "<br> <b> Full Name : </b>" + costumer.fullName + "<br> <b> Email : </b> " + costumer.email, confirmButtonText: 'Yes, delete it!', showCancelButton: true }).then(async(result) => {
+  if (result.isConfirmed) {
+    try {
+    const del = await deleteClient(costumer.id)
+    Swal.fire(
+      'Deleted!',
+      'Your file has been deleted.',
+      'success'
+    ).then((res) => {
+        window.location.reload()
+    })
+    } catch (error:any) {
+           Swal.fire(
+       error.message,
+      'Delete action has been suspended.',
+      'error'
+    )
+    }
+  }
+})} type="button" style={{backgroundColor:"red" , borderColor:"red"}} icon="pi pi-trash" rounded></Button></Flex>;
     };
 
-    const header = renderHeader();
-
+    const header = renderHeader(); 
+        const actionCheck = (costumer: Customer) => {
+            return <Checkbox onChange={(e) => {
+                if (e.target.checked) {
+                setSelectedCustomers([...selectedCustomers, costumer]);
+                }
+                else {
+                    const updatedCustomers = selectedCustomers.filter(existingCustomer => existingCustomer !== costumer);
+                    setSelectedCustomers(updatedCustomers);
+                 }
+            
+        }} /> ;
+    }; 
     return (
      
-      <Flex  >
+        <Flex style={{ flexDirection: "column" }}>
+            <Stack style={{  flexDirection:"row", flex:2 , height:50 }} > 
+                <Button onClick={() => Router.push('/admin/addClient')} style={{ backgroundColor: "green", border:"none" , height:50}}>Add client</Button>
+                {selectedCustomers.length && <Button onClick={() => Router.push('/admin/sendMail')} style={{ backgroundColor: "#422AFB" , height:50, marginLeft:15 ,marginTop:0  }}>Multiple Emails</Button>}
+            </Stack>
          <DataTable value={customers} paginator header={header} rows={8}
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                    rowsPerPageOptions={[10, 25, 50]} dataKey="id" /* selectionMode="checkbox" *//*  selection={selectedCustomers}  */
-                    onSelectionChange={(e) => {
-                        const customers = e.value as Customer[];
-                        setSelectedCustomers(customers);
-                    }}
+                    rowsPerPageOptions={[10, 25, 50]} dataKey="id"  
                     filters={filters} filterDisplay="menu" globalFilterFields={['company', 'fullName', 'email', 'country', 'sector', 'date']}
                     emptyMessage="No customers found." currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
-                {/* <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column> */}
+                 <Column field="id"  headerStyle={{ width: '5rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionCheck} />
                 <Column field="company" header="Company" sortable filter filterPlaceholder="Search by company" style={{ minWidth: '14rem' }} />
                 <Column field="fullName" header="Full Name" sortable filterField="fullName" style={{ minWidth: '14rem' }}    filterPlaceholder="Search by country" />
                 <Column header="Email" field='email' sortable sortField="email" filterField="email"  filterMenuStyle={{ width: '14rem' }}
                 style={{ minWidth: '14rem' }}  filter  />
                 <Column field="number"  header="Phone Number" sortable filterField="phone"   style={{ minWidth: '12rem' }}    />
                 <Column field="country" header="Country" sortable style={{ minWidth: '12rem' }}  filter />
-                <Column field="sector" header="Sector" sortable filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '12rem' }}   filter filterElement={statusFilterTemplate} />
-                <Column field="id" headerStyle={{ width: '5rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyTemplate} />
+                <Column field="sector" header="Sector" sortable filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '12rem' }}    />
+                <Column field="id" header="Actions" headerStyle={{ width: '5rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyTemplate} />
+                 
+                                    
             </DataTable>
            </Flex>
     );

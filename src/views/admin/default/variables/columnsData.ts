@@ -26,7 +26,7 @@ export const columnsDataComplex = [
   },
   {
     Header: "STATUS",
-    accessor: "status",
+    accessor: "time",
   },
   {
     Header: "DATE",
@@ -40,18 +40,9 @@ export const columnsDataComplex = [
 
 export type ColumnData = Column[];
 
-export type TableData = Column<{
-  company: String,
-  fullName: String,
-  email: String,
-  number: String,
-  country: String,
-  sector: String,
-  date: Date, 
-  userId: String
-}>;
+export type TableData =  any;
 
 export type TableProps = {
   columnsData: ColumnData;
-  tableData: TableData[];
+  tableData: any[];
 };

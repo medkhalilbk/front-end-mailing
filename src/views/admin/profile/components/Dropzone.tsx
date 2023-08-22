@@ -10,7 +10,8 @@ function Dropzone(props: any) {
   const { content, ...rest } = props;
 
 	useEffect(() => {
-	  console.log(selectedFile)
+    console.log(selectedFile)
+    props.filname(selectedFile)
   },[selectedFile])
 
   const {
@@ -55,7 +56,7 @@ function Dropzone(props: any) {
       h='max-content'
       minH='100%'
       cursor='pointer'
-      {...getRootProps({ className: 'dropzone', onDrop: (e) => e.stopPropagation() })}
+      {...getRootProps({ className: 'dropzone'})}
       {...rest}>
       <input {...getInputProps()} />
       <Button onClick={uploadFile} variant='no-effects'> <Box>
@@ -66,7 +67,7 @@ function Dropzone(props: any) {
 								</Text>
 							</Flex>
 							<Text fontSize='sm' fontWeight='500' color='secondaryGray.500'>
-								{selectedFile?.name ? "File loaded!" : "Only .csv files are allowed!"}
+								{selectedFile?.name ? selectedFile?.name  : "Only .csv files are allowed!"}
 							</Text>
 		  </Box> </Button>
 		 

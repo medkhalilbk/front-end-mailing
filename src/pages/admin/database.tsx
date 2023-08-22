@@ -1,44 +1,17 @@
-/*!
-  _   _  ___  ____  ___ ________  _   _   _   _ ___   
- | | | |/ _ \|  _ \|_ _|__  / _ \| \ | | | | | |_ _| 
- | |_| | | | | |_) || |  / / | | |  \| | | | | || | 
- |  _  | |_| |  _ < | | / /| |_| | |\  | | |_| || |
- |_| |_|\___/|_| \_\___/____\___/|_| \_|  \___/|___|
-                                                                                                                                                                                                                                                                                                                                       
-=========================================================
-* Horizon UI - v1.1.0
-=========================================================
-
-* Product Page: https://www.horizon-ui.com/
-* Copyright 2022 Horizon UI (https://www.horizon-ui.com/)
-
-* Designed and Coded by Simmmple
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
+ 
 
 import React from 'react'
 
 // Chakra imports
 import {
-  Box,
-  Button,
+  Box, 
   Flex,
-  Grid,
-  Text,
-  useColorModeValue,
-  SimpleGrid,
-  Link
+  Grid, 
+  SimpleGrid 
 } from '@chakra-ui/react'
 
-// Custom components
-import Banner from 'views/admin/marketplace/components/Banner'
-import TableTopCreators from 'views/admin/marketplace/components/RecentlyAdded'
-import HistoryItem from 'views/admin/marketplace/components/HistoryItem'
-import NFT from 'components/card/NFT'
+// Custom components 
+import TableTopCreators from 'views/admin/marketplace/components/RecentlyAdded' 
 import Card from 'components/card/Card'
 
 import Storage from 'views/admin/profile/components/Storage'
@@ -47,8 +20,32 @@ import tableDataTopCreators from 'views/admin/marketplace/variables/tableDataTop
 import { tableColumnsTopCreators } from 'views/admin/marketplace/variables/tableColumnsTopCreators'
 import AdminLayout from 'layouts/admin'
 import { TableData } from 'views/admin/default/variables/columnsData' 
+import { getFiles, getToken } from './requests'
+import Swal from 'sweetalert2'
+import  Router  from 'next/router'
 
-export default function NftMarketplace () { 
+export default function NftMarketplace() {
+  const [files, setFiles] = React.useState([])
+  React.useEffect(() => { 
+    getFiles()
+      .then((res) => {
+        if (res && res.data && res.data.message) {
+          setFiles(res.data.message);
+          console.log(res.data.message)
+        } else {
+          console.error("Invalid response format:", res);
+        }
+      })
+      .catch((err) => {
+        Swal.fire({
+          icon: 'error', title: "You have to reconnect!", allowOutsideClick: false,
+          showCloseButton: false, text: err.message
+        }).then(() => {
+          window.localStorage.clear();
+          Router.push('/auth');
+        });
+      })
+  }, []);
   return (
     <AdminLayout>
       <Box pt={{ base: '180px', md: '80px', xl: '80px' }}>
@@ -91,13 +88,12 @@ export default function NftMarketplace () {
           >
             <Card px='0px' mb='20px'>
               <TableTopCreators
-                tableData={(tableDataTopCreators as unknown) as TableData[]}
+                tableData={(files as unknown) as TableData[]}
                 columnsData={tableColumnsTopCreators}
               />
             </Card> 
           </Flex>
-        </Grid>
-        {/* Delete Product */}
+        </Grid> 
       </Box>
     </AdminLayout>
   )

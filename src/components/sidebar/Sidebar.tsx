@@ -41,12 +41,9 @@ function Sidebar (props: SidebarProps) {
   let shadow = useColorModeValue(
     '14px 17px 40px 4px rgba(112, 144, 176, 0.08)',
     'unset'
-  )
-  // Chakra Color Mode
+  ) 
   let sidebarBg = useColorModeValue('white', 'navy.800')
-  let sidebarMargins = '0px'
-
-  // SIDEBAR
+  let sidebarMargins = '0px' 
   return (
     <Box display={{ sm: 'none', xl: 'block' }} position='fixed' minH='100%'>
       <Box
