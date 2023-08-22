@@ -10,7 +10,7 @@ import {
   Button,
 } from '@chakra-ui/react';
 import Swal from 'sweetalert2';
-import { addClientRequest } from './requests';
+import { addClientRequest } from '../../components/requests';
 
 function AddClient() {
   const [company, setCompany] = useState('');

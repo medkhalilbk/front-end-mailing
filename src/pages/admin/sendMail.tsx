@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Avatar, Box, Text, Badge, Flex, Textarea, } from '@chakra-ui/react'
 import { Button } from 'primereact/button'; 
 import { deleteCostumerFromListAction } from 'redux/costumerSlice';
-import { sendEmail } from './requests';
+import { sendEmail } from '../../components/requests';
 import Swal from 'sweetalert2';  
 import  Router  from 'next/router';
 

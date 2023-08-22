@@ -3,7 +3,7 @@ import { Box, Button, Flex, Icon, Text, useColorModeValue } from '@chakra-ui/rea
 import axios from 'axios';
 // Custom components
 import Card from 'components/card/Card';
-import { axiosConfig } from 'pages/admin/requests';
+import { axiosConfig } from 'components/requests';
 import { useEffect, useState } from 'react';
 // Assets 
 import Swal from 'sweetalert2';

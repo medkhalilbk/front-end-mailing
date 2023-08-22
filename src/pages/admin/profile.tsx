@@ -10,7 +10,7 @@ import {
   Button,
 } from '@chakra-ui/react';
 import axios from 'axios';
-import { axiosConfig } from './requests';
+import { axiosConfig } from '../../components/requests';
 
 export default function ProfileOverview() {
   const [oldPassword, setOldPassword] = useState('');

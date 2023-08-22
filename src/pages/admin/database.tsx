@@ -20,7 +20,7 @@ import tableDataTopCreators from 'views/admin/marketplace/variables/tableDataTop
 import { tableColumnsTopCreators } from 'views/admin/marketplace/variables/tableColumnsTopCreators'
 import AdminLayout from 'layouts/admin'
 import { TableData } from 'views/admin/default/variables/columnsData' 
-import { getFiles, getToken } from './requests'
+import { getFiles, getToken } from '../../components/requests'
 import Swal from 'sweetalert2'
 import  Router  from 'next/router'
 

@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
 import Router from 'next/router';
 import { useDispatch } from 'react-redux';
 import { updateCostumersListAction } from 'redux/costumerSlice';
-import { deleteClient, updateClient } from 'pages/admin/requests';
+import { deleteClient, updateClient } from 'components/requests';
 interface Representative {
   name: string;
   image: string;

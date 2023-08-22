@@ -1,4 +1,4 @@
-import { getAllClients } from "pages/admin/requests";
+import { getAllClients } from "components/requests";
 
 export const CustomerService = {
  
