@@ -3,7 +3,7 @@ import { Box, Button, Flex, Icon, Text, useColorModeValue } from '@chakra-ui/rea
 import axios from 'axios';
 // Custom components
 import Card from 'components/card/Card';
-import { axiosConfig } from 'components/requests';
+import { apiUrl, axiosConfig } from 'components/requests';
 import { useEffect, useState } from 'react';
 // Assets 
 import Swal from 'sweetalert2';
@@ -29,7 +29,7 @@ export default function Upload(props: { used?: number; total?: number;[x: string
 				try {
 					
 				formData.append('name', name)
-					const postFile = await axios.post(process.env.API_URL + "/clients/import", formData, axiosConfig)
+					const postFile = await axios.post(apiUrl + "/clients/import", formData, axiosConfig)
 					window.location.reload()
 				} catch (error:any) {
 					Swal.fire({ title: "Error!", text:error.message})

@@ -42,7 +42,7 @@ function AddClient() {
 
   return (
     <AdminLayout>
-      <Flex flexDirection="column">
+      <Flex flexDirection="column"  padding={0} >
         <Text fontSize="3xl" fontWeight="bold">
           Add Client Informations :
         </Text>
