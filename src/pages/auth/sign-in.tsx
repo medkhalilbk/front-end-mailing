@@ -40,7 +40,7 @@ export default function SignIn() {
 	}
 	const handleSubmit = async () => { 
     try { 
-      const response = await axios.post(process.env.API_URL + "/auth/login", {email:user,password:password
+      const response = await axios.post("http://164.92.110.240:3000/v1/auth/login", {email:user,password:password
       });
  
 		if (response) {
