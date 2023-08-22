@@ -9,7 +9,7 @@ import { sendEmail } from './requests';
 import Swal from 'sweetalert2';  
 import  Router  from 'next/router';
 
-export default function sendMailPage() {
+export default function SendMailPage() {
 
   const costumersState = useSelector((state: any) => state.costumers)
   const [isDisabled,setIsDisabled] = useState(true)
@@ -51,7 +51,7 @@ export default function sendMailPage() {
       </AccordionButton>
     </h2>
     <AccordionPanel className='text-left text-medium mt-2 !text-navy-900 dark:!text-white' pb={4}>
-            {(Array.isArray(costumersState)) && costumersState.map((c:any) => { return <Flex>
+            {(Array.isArray(costumersState)) && costumersState.map((c:any,k:number) => { return <Flex  key={k}>
   <Avatar src="" size={'xs'} />
   <Box ml="3">
     <Text fontWeight="bold">

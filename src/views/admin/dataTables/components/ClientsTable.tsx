@@ -166,12 +166,12 @@ export default function CustomersDemo() {
   focusConfirm: false,
             preConfirm: () => {
     const id = costumer.id
-    const company = Swal.getPopup().querySelector('#company').value
-    const fullName = Swal.getPopup().querySelector('#fName').value 
-    const email = Swal.getPopup().querySelector('#email').value 
-    const number = Swal.getPopup().querySelector('#phone').value 
-    const country = Swal.getPopup().querySelector('#country').value 
-    const sector = Swal.getPopup().querySelector('#sector').value 
+    const company = (Swal.getPopup().querySelector('#company') as HTMLInputElement).value
+    const fullName = (Swal.getPopup().querySelector('#fName') as HTMLInputElement).value 
+    const email = (Swal.getPopup().querySelector('#email') as HTMLInputElement).value 
+    const number = (Swal.getPopup().querySelector('#phone') as HTMLInputElement ).value 
+    const country = (Swal.getPopup().querySelector('#country') as HTMLInputElement).value 
+    const sector = (Swal.getPopup().querySelector('#sector') as HTMLInputElement).value 
     
     return {id,company,fullName,email,number,country,sector}
   }

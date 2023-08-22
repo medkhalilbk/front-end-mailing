@@ -35,7 +35,7 @@ function AddClient() {
         const request =  await addClientRequest(client) 
         const toggleSwal = await Swal.fire({ title: "Client Added!", text: "Navigate to clients list to view the changes" })
         toggleSwal.isConfirmed ? Router.push('/admin/data-tables') : null
-    } catch (error) {
+    } catch (error:any) {
        await Swal.fire({ title: "Error", text: error.message })
     }
   };
