@@ -14,6 +14,7 @@ import Head from 'next/head'
 import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css'; 
+import BasicAuthGuard from 'components/basicAuthGuard'
 function MyApp ({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider theme={theme}>
@@ -24,6 +25,7 @@ function MyApp ({ Component, pageProps }: AppProps) {
       </Head>
       <React.StrictMode>
         <Provider store={store}>
+            <BasicAuthGuard/>
             <Component {...pageProps} />
         </Provider>
       </React.StrictMode>

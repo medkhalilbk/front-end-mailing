@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import Router from 'next/router';
+import { useRouter } from 'next/router' 
 import AdminLayout from 'layouts/admin';
 import { SimpleGrid } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import {
   FormControl,
   FormLabel,
@@ -10,9 +12,20 @@ import {
   Button,
 } from '@chakra-ui/react';
 import axios from 'axios';
-import { axiosConfig } from '../../components/requests';
+import { apiUrl, axiosConfig, getToken } from '../../components/requests';
+import { store } from 'redux/store';
 
 export default function ProfileOverview() {
+  const state = store.getState(); 
+  const token = getToken() 
+  React.useEffect(() => { 
+      console.log(token);
+      if (!token?.acessToken && !state.user.informations) {
+        if (typeof window !== "undefined") {
+         Router.push("/auth/sign-in")
+       };
+      }
+    }, [state]);
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
 
@@ -40,7 +53,7 @@ export default function ProfileOverview() {
   const handleChangePassword = async () => { 
     let userId = (window.localStorage.getItem('userId'))
     try {
-      let changePasswordRequest = await axios.patch(process.env.API_URL + "/users/" + userId, { oldPassword, newPassword }, axiosConfig)
+      let changePasswordRequest = await axios.patch(apiUrl + "/users/" + userId, { oldPassword, newPassword }, axiosConfig)
       
       Swal.fire(changePasswordRequest.data.message, '', 'success')
       if (typeof window !== 'undefined') {
@@ -48,15 +61,18 @@ export default function ProfileOverview() {
             Router.push('/auth');
           }     
     } catch (error: any) {  
+      console.log(error)
       Swal.fire(error.response.data.message, '', 'error');
       
     }
     
   };
 
+  
+
   return (
     <AdminLayout>
-      <SimpleGrid backgroundColor={'white'} borderRadius={13} columns={2} padding={3} spacing={10}>
+      <SimpleGrid backgroundColor={'white'} borderRadius={13} columns={1} padding={50} spacing={4}>
         <FormControl id="email">
           <FormLabel style={{ flexDirection: 'row' }}>Change Password</FormLabel>
           <Input
@@ -73,10 +89,10 @@ export default function ProfileOverview() {
             onChange={(e) => setNewPassword(e.target.value)}
             placeholder="New Password"
           />
-          <Button onClick={handleChangePassword} style={{ marginLeft: 5 }} variant="brand">
+          <Button disabled={(oldPassword == newPassword)}  onClick={handleChangePassword} style={{ marginLeft: 5 }} variant="brand">
             Update
           </Button>
-   
+          {((oldPassword == newPassword) &&  (oldPassword  !== "")) && <Text mt={2} color="red.300" >You can't change with the same password !</Text>}
         </FormControl>
       </SimpleGrid>
     </AdminLayout>

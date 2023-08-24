@@ -8,6 +8,7 @@ import {
   Text,
   Input,
   Button,
+  SimpleGrid,
 } from '@chakra-ui/react';
 import Swal from 'sweetalert2';
 import { addClientRequest } from '../../components/requests';
@@ -42,8 +43,9 @@ function AddClient() {
 
   return (
     <AdminLayout>
-      <Flex flexDirection="column"  padding={0} >
-        <Text fontSize="3xl" fontWeight="bold">
+      <SimpleGrid backgroundColor={'white'} borderRadius={13} columns={1} padding={50} spacing={4}>
+         <Flex flexDirection="column"  padding={0} >
+        <Text color={"gray.800"} fontSize="3xl" fontWeight="bold">
           Add Client Informations :
         </Text>
         <FormControl>
@@ -90,12 +92,14 @@ function AddClient() {
             onChange={(e) => setSector(e.target.value)}
           />
         </FormControl>
-        <Button backgroundColor={"green"} color={"white"} width={"60"} mt={5} onClick={handleButtonClick}>
-          Log Values
-        </Button>
+        <Button variant={"brand"} color={"white"} width={"60"} mt={5} onClick={handleButtonClick}>
+        Add client
+          </Button>
+          
       </Flex>
-      <Flex> 
-      </Flex>
+       </SimpleGrid>
+     
+     
     </AdminLayout>
   );
 }

@@ -43,20 +43,7 @@ export default function CustomersDemo() {
         sector:{ operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
     });
     const [globalFilterValue, setGlobalFilterValue] = useState<string>('');
-    const [representatives] = useState<Representative[]>([
-        { name: 'Amy Elsner', image: 'amyelsner.png' },
-        { name: 'Anna Fali', image: 'annafali.png' },
-        { name: 'Asiya Javayant', image: 'asiyajavayant.png' },
-        { name: 'Bernardo Dominic', image: 'bernardodominic.png' },
-        { name: 'Elwin Sharvill', image: 'elwinsharvill.png' },
-        { name: 'Ioni Bowcher', image: 'ionibowcher.png' },
-        { name: 'Ivan Magalhaes', image: 'ivanmagalhaes.png' },
-        { name: 'Onyama Limba', image: 'onyamalimba.png' },
-        { name: 'Stephen Shaw', image: 'stephenshaw.png' },
-        { name: 'XuXue Feng', image: 'xuxuefeng.png' }
-    ]);
-    const [statuses] = useState<string[]>(['unqualified', 'qualified', 'new', 'negotiation', 'renewal']);
-
+    
     const getSeverity = (status: string) => {
         switch (status) {
             case 'unqualified':
@@ -226,7 +213,7 @@ export default function CustomersDemo() {
     return (
      
         <Flex style={{ flexDirection: "column" }}>
-            <Stack style={{  flexDirection:"row", flex:2 , height:50 }} > 
+            <Stack mb={2} style={{  flexDirection:"row", flex:2 , height:50 }} > 
                 <Button onClick={() => Router.push('/admin/addClient')} style={{ backgroundColor: "green", border:"none" , height:50}}>Add client</Button>
                 {selectedCustomers.length && <Button onClick={() => Router.push('/admin/sendMail')} style={{ backgroundColor: "#422AFB" , height:50, marginLeft:15 ,marginTop:0  }}>Multiple Emails</Button>}
             </Stack>
@@ -242,7 +229,7 @@ export default function CustomersDemo() {
                 style={{ minWidth: '14rem' }}  filter  />
                 <Column field="number"  header="Phone Number" sortable filterField="phone"   style={{ minWidth: '12rem' }}    />
                 <Column field="country" header="Country" sortable style={{ minWidth: '12rem' }}  filter />
-                <Column field="sector" header="Sector" sortable filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '12rem' }}    />
+                <Column field="sector" header="Sector" sortable filterMenuStyle={{ width: '14rem' }} filter style={{ minWidth: '12rem' }}    />
                 <Column field="id" header="Actions" headerStyle={{ width: '5rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyTemplate} />
                  
                                     
