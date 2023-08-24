@@ -92,7 +92,7 @@ export default function ProfileOverview() {
           <Button disabled={(oldPassword == newPassword)}  onClick={handleChangePassword} style={{ marginLeft: 5 }} variant="brand">
             Update
           </Button>
-          {((oldPassword == newPassword) &&  (oldPassword  !== "")) && <Text mt={2} color="red.300" >You can't change with the same password !</Text>}
+          {((oldPassword == newPassword) &&  (oldPassword  !== "")) && <Text mt={2} color="red.300" >You can`&apos;`t change with the same password !</Text>}
         </FormControl>
       </SimpleGrid>
     </AdminLayout>
