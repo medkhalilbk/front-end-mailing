@@ -215,7 +215,7 @@ export default function CustomersDemo() {
         <Flex style={{ flexDirection: "column" }}>
             <Stack mb={2} style={{  flexDirection:"row", flex:2 , height:50 }} > 
                 <Button onClick={() => Router.push('/admin/addClient')} style={{ backgroundColor: "green", border:"none" , height:50}}>Add client</Button>
-                {selectedCustomers.length && <Button onClick={() => Router.push('/admin/sendMail')} style={{ backgroundColor: "#422AFB" , height:50, marginLeft:15 ,marginTop:0  }}>Multiple Emails</Button>}
+                {selectedCustomers.length && <><Button onClick={() => Router.push('/admin/sendMail')} style={{ backgroundColor: "#422AFB", height: 50, marginLeft: 15, marginTop: 0 }}>Multiple Emails</Button> <Button onClick={() => Router.push('/admin/print')} style={{ backgroundColor: "#2196F3", height: 50, marginLeft: 15, marginTop: 0 }}>Print client</Button></>}
             </Stack>
          <DataTable value={customers} paginator header={header} rows={8}
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"

@@ -25,7 +25,7 @@ function MyApp ({ Component, pageProps }: AppProps) {
       </Head>
       <React.StrictMode>
         <Provider store={store}>
-            <BasicAuthGuard/>
+          {/*   <BasicAuthGuard/> */}
             <Component {...pageProps} />
         </Provider>
       </React.StrictMode>
