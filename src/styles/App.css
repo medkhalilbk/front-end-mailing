@@ -8,3 +8,8 @@ option {
 .css-exwyyx{
   display: none!important;
 }
+@media only print {
+  .noPrint {
+     display: none!important;
+  }
+}
