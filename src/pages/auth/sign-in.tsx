@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react';
 // Custom components 
 import DefaultAuthLayout from 'layouts/auth/Default';
-
+import cookieCutter from 'cookie-cutter' 
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginAction } from 'redux/userSlice';
@@ -50,7 +50,12 @@ export default function SignIn() {
 		window.localStorage.setItem('tokenAccess', response.data.tokens.access.token)
 		window.localStorage.setItem('tokenRefresh',response.data.tokens.refresh.token)
 		window.localStorage.setItem('userId',response.data.user.id)
+		cookieCutter.set('tokenAccess', response.data.tokens.access.token)
+		cookieCutter.set('tokenRefresh',response.data.tokens.refresh.token)
+		cookieCutter.set('userId',response.data.user.id)
+		 
 		Router.push('/admin')
+		
       }
 		} catch (error:any) {
       console.error('Error during authentication:', error);
