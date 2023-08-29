@@ -7,8 +7,6 @@ import AdminLayout from 'layouts/admin';
 import {useReactToPrint} from 'react-to-print'; 
 import { deleteCostumerFromListAction } from 'redux/costumerSlice';
 import { useDispatch, useSelector } from 'react-redux';
-
-
 export default function AdvancedDemo() {  
 
     const globalRef = useRef(null)
@@ -20,9 +18,7 @@ export default function AdvancedDemo() {
         onBeforeGetContent : () => {
             setIsPrint(true)
         } , 
-        onAfterPrint : ( ) => {
-            setIsPrint(false) 
-        } ,
+ 
         content: () => globalRef.current,
       });
     const costumersList = useSelector((state: any) => state.costumers)
@@ -40,7 +36,7 @@ export default function AdvancedDemo() {
                 <div className="card flex justify-content-center">
                     <Card title={fullName} subTitle={company} footer={() => {
                         return (
-                            <div  hidden={isPrint}  className="flex flex-wrap justify-content-end gap-2">
+                            <div  hidden={isPrint}  className="flex flex-wrap justify-content-end gap-2 no-print">
                                 <Button label="Remove" onClick={() => {
                                     dispatch(deleteCostumerFromListAction({ id: id }));
                                 } } icon="pi pi-trash" style={{ backgroundColor: "red", borderColor: "transparent", marginRight: "10px" }} />

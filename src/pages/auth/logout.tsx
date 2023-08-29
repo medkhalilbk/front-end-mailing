@@ -1,6 +1,7 @@
 import React from 'react';
 import Swal from 'sweetalert2';
 import Router from 'next/router';
+import cookieCutter from 'cookie-cutter' 
 
 function Logout() {
   React.useEffect(() => {
@@ -17,6 +18,7 @@ function Logout() {
       }).then((result) => {
         if (result.isConfirmed) {
           Swal.fire('Logged out!', '', 'success');
+          cookieCutter.set('tokenAccess',null)
           if (typeof window !== 'undefined') {
             window.localStorage.clear();
             Router.push('/auth');
